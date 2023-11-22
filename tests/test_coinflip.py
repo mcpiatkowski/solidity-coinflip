@@ -21,9 +21,24 @@ def test_set_max_players_by_owner(coinflip: ContractInstance, owner: AccountAPI)
     assert coinflip.maxPlayers() == 25
 
 
-def test_set_max_players_by_player(coinflip: ContractInstance, players: List[AccountAPI]):
+def test_set_max_players_by_player(coinflip: ContractInstance, players: List[AccountAPI]) -> None:
     """Test max players set by a player."""
     assert coinflip.maxPlayers() == 20
     with pytest.raises(ContractLogicError) as err:
         coinflip.setMaxPlayers(25, sender=players[0])
     assert err.value.args[0] == "Only owner can set maximum number of players."
+
+
+def test_set_min_bet_by_owner(coinflip: ContractInstance, owner: AccountAPI) -> None:
+    """Test min bet set by the owner."""
+    assert coinflip.minBet() == 1
+    coinflip.setMinBet(10, sender=owner)
+    assert coinflip.minBet() == 10
+
+
+def test_set_min_bet_by_player(coinflip: ContractInstance, players: List[AccountAPI]) -> None:
+    """Test min bet set by a player."""
+    assert coinflip.minBet() == 1
+    with pytest.raises(ContractLogicError) as err:
+        coinflip.setMinBet(10, sender=players[0])
+    assert err.value.args[0] == "Only owner can set minimal bet amount."

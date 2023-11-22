@@ -22,7 +22,12 @@ contract Coinflip {
         coinflipStatus = CoinflipStatus.DONE;
     }
 
-    function setMaxPlayers(uint _maxPlayers) public {
+    function setMinBet(uint _minBet) external {
+        require(msg.sender == owner, "Only owner can set minimal bet amount.");
+        minBet = _minBet;
+    }
+
+    function setMaxPlayers(uint _maxPlayers) external {
         require(msg.sender == owner, "Only owner can set maximum number of players.");
         maxPlayers = _maxPlayers;
     }
