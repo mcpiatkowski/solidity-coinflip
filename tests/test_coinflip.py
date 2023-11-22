@@ -1,11 +1,9 @@
+from typing import List
+
+import pytest
 from ape.api import AccountAPI
 from ape.contracts.base import ContractInstance
-
-
-# def test_deployed(owner: AccountAPI, coinflip: ContractInstance) -> None:
-#
-#     account = coinflip.owner()
-#     assert account == owner
+from ape.exceptions import ContractLogicError
 
 
 def test_deployed(coinflip: ContractInstance, owner: AccountAPI) -> None:
@@ -21,3 +19,11 @@ def test_set_max_players_by_owner(coinflip: ContractInstance, owner: AccountAPI)
     assert coinflip.maxPlayers() == 20
     coinflip.setMaxPlayers(25, sender=owner)
     assert coinflip.maxPlayers() == 25
+
+
+def test_set_max_players_by_player(coinflip: ContractInstance, players: List[AccountAPI]):
+    """Test max players set by a player."""
+    assert coinflip.maxPlayers() == 20
+    with pytest.raises(ContractLogicError) as err:
+        coinflip.setMaxPlayers(25, sender=players[0])
+    assert err.value.args[0] == "Only owner can set maximum number of players."

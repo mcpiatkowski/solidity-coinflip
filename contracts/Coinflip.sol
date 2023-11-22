@@ -23,6 +23,7 @@ contract Coinflip {
     }
 
     function setMaxPlayers(uint _maxPlayers) public {
+        require(msg.sender == owner, "Only owner can set maximum number of players.");
         maxPlayers = _maxPlayers;
     }
 }
