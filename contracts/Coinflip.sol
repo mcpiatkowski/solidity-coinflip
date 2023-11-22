@@ -22,6 +22,8 @@ contract Coinflip {
         coinflipStatus = CoinflipStatus.DONE;
     }
 
-
+    function setMaxPlayers(uint _maxPlayers) public {
+        maxPlayers = _maxPlayers;
+    }
 }
 
