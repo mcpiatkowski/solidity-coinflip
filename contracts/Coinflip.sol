@@ -32,4 +32,3 @@ contract Coinflip {
         maxPlayers = _maxPlayers;
     }
 }
-
